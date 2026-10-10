@@ -9,14 +9,14 @@ Automated local Jenkins installation using jenkins.war with systemd, pre-configu
 - jq
 
 Install:
+```
 sudo apt update && sudo apt install -y openjdk-21-jre jq
-
+```
 ## Project Structure
 ```
 jenkins/
 ├── .env                  # Credentials & port
 ├── jenkins.war           # Jenkins WAR file
-├── jenkins-cli.jar       # Jenkins CLI
 ├── setup.sh              # One-time installer
 ├── cleanup.sh            # Full teardown
 ├── start-jenkins.sh      # Runtime script (generated)
@@ -31,36 +31,31 @@ jenkins/
     └── workspace/
         └── my-job/
 ```
-
 ## Quick Start
-
+```
 wget https://get.jenkins.io/war-stable/latest/jenkins.war
-wget https://get.jenkins.io/cli/jenkins-cli.jar
-nano .env
+
 ./setup.sh
 sudo systemctl start jenkins
-
+```
 Open http://localhost:8080 and log in with credentials from .env.
 
 ## Configuration
-
-.env:
-JENKINS_ADMIN_USER=admin
-JENKINS_ADMIN_PASS=admin
+.env
+```
+JENKINS_ADMIN_USER=your_username
+JENKINS_ADMIN_PASS=your_password
 JENKINS_PORT=8080
-
-Restart after changes:
-sudo systemctl restart jenkins
-
+```
 ## Service Management
-
+```
 sudo systemctl start jenkins      # Start
 sudo systemctl stop jenkins       # Stop
 sudo systemctl restart jenkins    # Restart
 systemctl status jenkins          # Status
 journalctl -u jenkins -f          # Live logs
 ./cleanup.sh                      # Full teardown
-
+```
 ## How It Works
 
 1. setup.sh writes start-jenkins.sh and the systemd unit file, then enables the service.
@@ -72,12 +67,11 @@ journalctl -u jenkins -f          # Live logs
    - Installs all currently suggested plugins via CLI
    - Stays alive as the parent process (systemd requirement)
 
-## Retesting
-
+## Cleanup (start over from scratch)
+```
 ./cleanup.sh
 ./setup.sh
-sudo systemctl start jenkins
-
+```
 ## Notes
 
 - Running as your desktop user — fine for local dev, not production.
